@@ -1,0 +1,5 @@
+.operations-table {
+    display: flex;
+    align-self: center;
+    border: 1px solid gray;
+}
