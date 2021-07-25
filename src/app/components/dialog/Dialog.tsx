@@ -7,10 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import {unstable_createMuiStrictModeTheme, ThemeProvider} from '@material-ui/core/styles';
-import {useOperationsList} from '../../hooks';
 
-const theme = unstable_createMuiStrictModeTheme();
 
 interface ICreateDialogProps {
     open: boolean,
@@ -19,7 +16,7 @@ interface ICreateDialogProps {
 }
 
 
-function CreateDialog(props: ICreateDialogProps) {
+export function CreateDialog(props: ICreateDialogProps) {
     const [operationName, setOperationName] = React.useState('');
 
 
@@ -38,33 +35,29 @@ function CreateDialog(props: ICreateDialogProps) {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
-                <DialogTitle id="form-dialog-title">Create Operation</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Enter the name of operation
-                    </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="name"
-                        label="Operation name"
-                        value={operationName}
-                        onChange={handleChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleCreate} color="primary">
-                        Create
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        </ThemeProvider>
+        <Dialog open={props.open} onClose={handleClose} aria-labelledby="form-dialog-title">
+            <DialogTitle id="form-dialog-title">Create Operation</DialogTitle>
+            <DialogContent>
+                <DialogContentText>
+                    Enter the name of operation
+                </DialogContentText>
+                <TextField
+                    autoFocus
+                    margin="dense"
+                    id="name"
+                    label="Operation name"
+                    value={operationName}
+                    onChange={handleChange}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClose} color="primary">
+                    Cancel
+                </Button>
+                <Button onClick={handleCreate} color="primary">
+                    Create
+                </Button>
+            </DialogActions>
+        </Dialog>
     )
 }
-
-export {CreateDialog}

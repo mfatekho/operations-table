@@ -4,22 +4,22 @@ import axios from 'axios';
 
 export interface IOperationListHook {
     operations: IOperationItem[],
-    isLoading: boolean,
     error: string | null,
     addOperation: ((name: string) => void)
+    deleteOperation: ((id: number) => void)
 }
-const hostAddr = 'http://127.0.0.1:3001';
+
+const hostAddr = `${document.baseURI}/api`;
 
 export const useOperationsList = (): IOperationListHook => {
     const [operations, setOperations] = useState<IOperationItem[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const eventSource = new EventSource(`${hostAddr}/operations/sse`);
         eventSource.onmessage = ({ data }) => {
-            const datta = JSON.parse(data);
-            setOperations(datta.operations);
+            const parsedData = JSON.parse(data);
+            setOperations(parsedData.operations);
         }
         eventSource.onerror = (() => {
             setError('Error on connecting server');
@@ -27,15 +27,22 @@ export const useOperationsList = (): IOperationListHook => {
     }, []);
 
     const addOperation = async (name: string) => {
-        setIsLoading(true);
         try {
             await axios.post(`${hostAddr}/operations`, {name})
         }
         catch (err) {
             setError(err.message);
         }
-        setIsLoading(false);
     }
 
-    return {operations, isLoading, error, addOperation};
+    const deleteOperation = async (id: number) => {
+        try {
+            await axios.delete(`${hostAddr}/operations/${id}`)
+        }
+        catch (err) {
+            setError(err.message);
+        }
+    }
+
+    return {operations, error, addOperation, deleteOperation};
 }

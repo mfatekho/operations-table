@@ -1,7 +1,9 @@
+import {StatusNames} from './status';
+
 export interface IOperationItem {
     id: number;
     name: string;
-    status: string;
+    status: StatusNames;
 }
 
 export interface IOperationsState {
