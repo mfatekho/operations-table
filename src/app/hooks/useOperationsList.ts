@@ -9,7 +9,7 @@ export interface IOperationListHook {
     deleteOperation: ((id: number) => void)
 }
 
-const hostAddr = `${document.baseURI}/api`;
+const hostAddr = `${document.baseURI}api`;
 
 export const useOperationsList = (): IOperationListHook => {
     const [operations, setOperations] = useState<IOperationItem[]>([]);

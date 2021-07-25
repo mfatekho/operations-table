@@ -54,7 +54,7 @@ export function CreateDialog(props: ICreateDialogProps) {
                 <Button onClick={handleClose} color="primary">
                     Cancel
                 </Button>
-                <Button onClick={handleCreate} color="primary">
+                <Button onClick={handleCreate} color="primary" disabled={operationName === ''}>
                     Create
                 </Button>
             </DialogActions>
