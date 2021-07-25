@@ -1,15 +1,15 @@
-import React, {Dispatch, SetStateAction} from 'react'
+import React from 'react'
 
 import Button from '@material-ui/core/Button';
 
-
-import {IOperationItem} from '../../models/operations';
-
 import './Create.css'
 import {CreateDialog} from '../dialog';
+import {IOperationListHook} from '../../hooks/useOperationsList';
+
+interface ICreateProps extends Pick<IOperationListHook, 'addOperation'>{}
 
 
-function Create(props: { operations: IOperationItem[], setOperations: Dispatch<SetStateAction<IOperationItem[]>> }) {
+function Create({addOperation}: ICreateProps) {
     const [open, setOpen] = React.useState(false);
     const handleClickOpen = () => {
         setOpen(true);
@@ -20,8 +20,7 @@ function Create(props: { operations: IOperationItem[], setOperations: Dispatch<S
                     onClick={handleClickOpen}>
                 Create
             </Button>
-            <CreateDialog open={open} setOpen={setOpen} operations={props.operations}
-                          setOperations={props.setOperations}/>
+            <CreateDialog open={open} setOpen={setOpen} addOperation={addOperation}/>
         </div>
     )
 }

@@ -1,21 +1,41 @@
 import {IOperationItem} from '../models/operations';
-import {Dispatch, SetStateAction, useEffect, useState} from 'react';
+import { useEffect, useState} from 'react';
+import axios from 'axios';
 
-function useOperationsList(): [IOperationItem[], Dispatch<SetStateAction<IOperationItem[]>>] {
-    const [operations, setOperations] = useState<IOperationItem[]>([])
+export interface IOperationListHook {
+    operations: IOperationItem[],
+    isLoading: boolean,
+    error: string | null,
+    addOperation: ((name: string) => void)
+}
+const hostAddr = 'http://127.0.0.1:3001';
+
+export const useOperationsList = (): IOperationListHook => {
+    const [operations, setOperations] = useState<IOperationItem[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const hostAddr = 'http://127.0.0.1:3001';
-
-        async function fetchOperations() {
-            const fullResponse = await fetch(`${hostAddr}/test`);
-            const responseJson = await fullResponse.json();
-            setOperations(responseJson.data);
+        const eventSource = new EventSource(`${hostAddr}/operations/sse`);
+        eventSource.onmessage = ({ data }) => {
+            const datta = JSON.parse(data);
+            setOperations(datta.operations);
         }
-
-        fetchOperations();
+        eventSource.onerror = (() => {
+            setError('Error on connecting server');
+        })
     }, []);
-    return [operations, setOperations];
-}
 
-export {useOperationsList}
+    const addOperation = async (name: string) => {
+        setIsLoading(true);
+        try {
+            await axios.post(`${hostAddr}/operations`, {name})
+        }
+        catch (err) {
+            setError(err.message);
+        }
+        setIsLoading(false);
+    }
+
+    return {operations, isLoading, error, addOperation};
+}

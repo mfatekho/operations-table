@@ -10,9 +10,12 @@ import TableRow from '@material-ui/core/TableRow';
 import './Table.css'
 
 import {IOperationItem} from "../../models/operations";
+import {IOperationListHook} from '../../hooks/useOperationsList';
+
+interface IOperationsTableProps extends Pick<IOperationListHook, 'operations'>{}
 
 
-function OperationsTable(props: {operations: IOperationItem[]}) {
+function OperationsTable({operations}: IOperationsTableProps) {
     return (
         <TableContainer className="operations-table">
             <Table aria-label="simple table">
@@ -23,10 +26,10 @@ function OperationsTable(props: {operations: IOperationItem[]}) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.operations.map((element: IOperationItem) => (
+                    {operations.map((element: IOperationItem) => (
                         <TableRow key={element.id}>
                             <TableCell component="th" scope="row">
-                                {element.operation}
+                                {element.name}
                             </TableCell>
                             <TableCell align="right">{element.status}</TableCell>
                         </TableRow>

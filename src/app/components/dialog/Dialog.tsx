@@ -8,27 +8,23 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import {unstable_createMuiStrictModeTheme, ThemeProvider} from '@material-ui/core/styles';
-
-
-import {IOperationItem} from '../../models/operations';
+import {useOperationsList} from '../../hooks';
 
 const theme = unstable_createMuiStrictModeTheme();
 
+interface ICreateDialogProps {
+    open: boolean,
+    setOpen: Dispatch<SetStateAction<boolean>>,
+    addOperation: ((name: string) => void),
+}
 
-function CreateDialog(props: {
-    open: boolean, setOpen: Dispatch<SetStateAction<boolean>>,
-    operations: IOperationItem[], setOperations: Dispatch<SetStateAction<IOperationItem[]>>
-}) {
+
+function CreateDialog(props: ICreateDialogProps) {
     const [operationName, setOperationName] = React.useState('');
 
+
     const handleCreate = () => {
-        const operationToAdd: IOperationItem = {
-            id: props.operations.length,
-            operation: operationName,
-            status: 'In Progress'
-        }
-        const operations = [...props.operations, operationToAdd];
-        props.setOperations(operations) // TODO add via server request to get rid of operations and setOperations in props
+        props.addOperation(operationName);
         setOperationName('');
         props.setOpen(false);
     };
@@ -62,10 +58,7 @@ function CreateDialog(props: {
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
-                    <Button
-                        onClick={handleCreate}
-                        color="primary"
-                    >
+                    <Button onClick={handleCreate} color="primary">
                         Create
                     </Button>
                 </DialogActions>

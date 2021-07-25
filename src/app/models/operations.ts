@@ -1,5 +1,11 @@
 export interface IOperationItem {
     id: number;
-    operation: string;
+    name: string;
     status: string;
+}
+
+export interface IOperationsState {
+    operations: IOperationItem[],
+    isLoading: boolean,
+    error?: string | null,
 }
