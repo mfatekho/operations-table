@@ -9,16 +9,17 @@ const theme = unstable_createMuiStrictModeTheme();
 function App() {
     const {operations, addOperation, deleteOperation} = useOperationsList();
     return (
-        <div className="App">
-            <header className="App-header">Simple operations table</header>
-            <div className="content">
-                <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme}>
+            <div className="App">
+                <header className="App-header">Simple operations table</header>
+                <div className="content">
                     <Create addOperation={addOperation}/>
-                </ThemeProvider>
-                {operations?.length ? (<OperationsTable operations={operations} deleteOperation={deleteOperation}/>) : (
-                    <span>There is no data yet.</span>)}
+                    {operations?.length ? (
+                        <OperationsTable operations={operations} deleteOperation={deleteOperation}/>) : (
+                        <span>There is no data yet.</span>)}
+                </div>
             </div>
-        </div>
+        </ThemeProvider>
     );
 }
 

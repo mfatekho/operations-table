@@ -4,13 +4,15 @@ import Button from '@material-ui/core/Button';
 
 import {CreateDialog} from '../dialog';
 import {IOperationListHook} from '../../hooks/useOperationsList';
-import {makeStyles} from '@material-ui/core';
+import {createTheme, makeStyles} from '@material-ui/core';
 
 interface ICreateProps extends Pick<IOperationListHook, 'addOperation'>{}
 
+const theme = createTheme();
+
 const useStyles = makeStyles({
     createBtn: {
-        margin: '20px 0 20px 20px',
+        margin: theme.spacing(3.5, 0, 3.5, 3.5),
         alignSelf: 'flex-end'
     }
 });
